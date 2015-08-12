@@ -9,7 +9,7 @@ class Application:
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
 
-        def open_home_page(self):
+    def open_home_page(self):
         wd = self.wd
         wd.get("http://localhost/addressbook/")
 
