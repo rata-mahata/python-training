@@ -2,7 +2,7 @@
 
 import pytest
 from model.contact import Contact
-from fixture.application_contact import Application
+from fixture.application import Application
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def app(request):
 
 def test_add_contact(app):
 
-    app.login(username="admin", password="secret")
-    app.create_contact(Contact(name="Jane", surname="Doe", title="Ms", phone="012345678", email="jane.doe@gmail.com"))
-    app.logout()
+    app.session.login(username="admin", password="secret")
+    app.contact.create(Contact(name="Jane", surname="Doe", title="Ms", phone="012345678", email="jane.doe@gmail.com"))
+    app.session.logout()
 
