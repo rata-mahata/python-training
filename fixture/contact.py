@@ -1,6 +1,7 @@
 __author__ = 'Olga'
-
+from model.contact import Contact
 class ContactHelper :
+
 
     def __init__(self, app):
         self.app = app
@@ -17,6 +18,7 @@ class ContactHelper :
         # filling form
         self.fill_contact_form(contact)
         wd.find_element_by_name("submit").click()
+        self.contact_cache=None
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -53,6 +55,7 @@ class ContactHelper :
         self.fill_contact_form(new_contact_data)
         wd.find_element_by_name("update").click()
         wd.get("http://localhost/addressbook/")
+        self.contact_cache=None
 
 
     def count(self):
@@ -60,6 +63,20 @@ class ContactHelper :
         self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache=None
+
+    def get_contact_list(self):
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.open_home_page()
+            self.contact_cache = []
+            for row in wd.find_elements_by_name("entry"):
+                cells = row.find_elements_by_tag_name("td")
+                surname = cells[1].text
+                name = cells[2].text
+                id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                self.contact_cache.append(Contact(surname=surname, name=name,id=id))
+        return list(self.contact_cache)
 
 
 
